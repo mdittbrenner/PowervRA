@@ -1,5 +1,5 @@
 ﻿# --- Get data for the tests
-$JSON = Get-Content .\Variables.json -Raw | ConvertFrom-JSON
+$JSON = Get-Content $Global:vRATestVariablePath -Raw | ConvertFrom-JSON
 
 # --- Tests
 Describe -Name 'Connectivity Tests' -Fixture {
