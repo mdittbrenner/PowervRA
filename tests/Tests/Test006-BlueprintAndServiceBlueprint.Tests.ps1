@@ -1,5 +1,5 @@
 ﻿# --- Get data for the tests
-$JSON = Get-Content .\Variables.json -Raw | ConvertFrom-JSON
+$JSON = Get-Content $Global:vRATestVariablePath -Raw | ConvertFrom-JSON
 
 # --- Startup
 $Connection = Connect-vRAServer -Server $JSON.Connection.vRAAppliance -Tenant $JSON.Connection.Tenant -Username $JSON.Connection.Username -Password $JSON.Connection.Password -IgnoreCertRequirements

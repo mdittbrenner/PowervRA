@@ -1,3 +1,10 @@
+<#
+
+    This script is intended to use used as a wrapper for Pester.
+    It allows a sinlge entry point for multiple different testing scenarios.
+
+#>
+
 Param (
 
     # Parameter help description
@@ -9,8 +16,10 @@ Param (
 
 # --- Get the current location
 $Location = (Get-Location -Verbose:$VerbosePreference).Path
+Write-Verbose -Message "Current location: $($Location)"
 
 $VariablePath = "$($Location)\Variables\v$($Version).json"
+Write-Verbose -Message "Variable path: $($VariablePath)"
 
 try {
 
@@ -21,15 +30,18 @@ try {
 
         if (!(Test-Path -Path "$($Location)\Logs")) {
 
-            New-Item -Path
-
+            Write-Verbose -Message "Creating Pester output directory at $($Location)\Logs"
+            New-Item -Path -Verbose | Out-Null
 
         }
 
         $OutputFile = "$($Location)\Logs\PesterResults-NUnitXml-$(Get-Date -Format ddMMyyyy.hhmmss).xml"
+
+        Write-Verbose -Message "Invoking Pester using output file $($OutputFile)"
+
         $ExitCode = Invoke-Pester -EnableExit -OutputFormat NUnitXml -OutputFile $OutputFile -Verbose:$VerbosePreference
 
-        $ExitCode
+        Write-Verbose -Message "Completed with ExitCode $($ExitCode)"
 
     } else {
 
@@ -45,8 +57,8 @@ catch [System.Exception]{
 }
 finally {
 
-    # --- Ensure that the vRATestVariablePath global variable is cleared regardless of the outcome 
+    # --- Ensure that the vRATestVariablePath global variable is cleared regardless of the outcome
+    Write-Verbose -Message "Cleaning up vRATestVariablePath global variable"
     Remove-Variable -Scope GLOBAL -Name vRATestVariablePath -Force -ErrorAction SilentlyContinue -Verbose:$VerbosePreference
 
 }
-
