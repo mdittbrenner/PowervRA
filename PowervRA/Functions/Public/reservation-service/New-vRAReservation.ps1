@@ -333,7 +333,7 @@
 
                     switch ($PSBoundParameters.Type) {
 
-                        'vSphere' {
+                        'vSphere (vCenter)' {
                             
                             # ---
                             # --- Alert Policy
